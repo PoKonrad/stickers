@@ -242,6 +242,14 @@
 
             });
             dv.innerHTML = template;
+
+            if (window.location.hash) {
+                const jumpTo = window.location.hash.substr(1);
+                const jumpEl = document.getElementById(jumpTo);
+                if (jumpEl) {
+                    jumpEl.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
         })();
     </script>
     </body>
