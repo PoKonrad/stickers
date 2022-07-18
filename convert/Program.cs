@@ -103,6 +103,11 @@ foreach (var dir in dirs)
             image.Save(resizedFullName, new PngEncoder());
         }
     }
+
+    if (Directory.Exists(pngDir))
+    {
+        Directory.Delete(pngDir, true);
+    }
 }
 
 
