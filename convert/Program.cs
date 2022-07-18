@@ -108,5 +108,6 @@ foreach (var dir in dirs)
 
 var jsonString = JsonSerializer.Serialize(stickers);
 
+File.WriteAllText(@"..\..\..\..\web\stickers.json", jsonString);
 Console.WriteLine("done");
 Console.ReadKey();
