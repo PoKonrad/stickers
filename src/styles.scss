@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    background-color: #282c2f;
+    overflow-x: hidden;
+    color: white;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e91e63; 
+    border-radius: 10px;
+
+    &:hover {
+        background: #c22257;
+    }
+}

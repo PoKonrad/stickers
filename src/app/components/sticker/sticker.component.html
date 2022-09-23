@@ -1,0 +1,10 @@
+<div class="imageContainer">
+    <img class="sticker" src="{{url.slice(0, -4)}}_160.png" loading="lazy" (click)="copyToClipboard(url)" [@openClose]="isShown ? 'open' : 'closed'">
+    <div class="text" [@hideText]="isShown ? 'hidden' : 'shown'">
+        <p>HIDDEN</p>
+    </div>
+    <div class="buttons">
+        <mat-icon color="accent" class="button-one" (click)="hideClick(url)">{{isShown ? "visibility_off" : "visibility_on"}}</mat-icon>
+        <mat-icon color="primary" class="button-one" (click)="favoriteClick(url)">{{isFavorite ? "favorite_outlined" : "favorite"}}</mat-icon>
+    </div>
+</div>

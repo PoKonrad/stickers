@@ -1,0 +1,22 @@
+.sticker-set-bar {
+    width: 100vw;
+    height: 2rem;
+    color: white;
+    font-size: 1.5rem;
+    padding: 1rem;
+    font-weight: 200;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    
+    &:hover {
+        font-weight: 400;
+    }
+}
+
+.content {
+    display: flex;
+    width: 98%;
+    flex-wrap: wrap;
+    justify-content: center;
+}

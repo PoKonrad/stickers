@@ -1,0 +1,57 @@
+body {
+    background-color: black;
+}
+
+.save-bar {
+    width: 100vw;
+    background-color: #e91e63;
+    color: white;
+    position: fixed;
+    top: 0;
+    z-index: 2;
+    height: 2rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+
+    & button {
+        margin-inline: 1rem;
+        outline: none;
+        border: none;
+        border-radius: 0.5rem;
+        font-variant: small-caps;
+        padding: 0.8rem;
+        padding-inline: 1.4rem;
+        background-color: #424242;
+        color: white;
+        font-size: 14px;
+        font-weight: 500;
+        z-index: 3;
+        cursor: pointer;
+    }
+}
+
+.settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    gap: 2rem;
+    padding: 1rem;
+    background-color: #e91e63;
+
+    & mat-checkbox {
+        z-index: 10;
+    }
+}
+
+.select {
+    width: 8rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.virtualscroll{
+    width: 100%;
+    height: 100%;
+}

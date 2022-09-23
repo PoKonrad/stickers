@@ -1,0 +1,9 @@
+<div *ngIf="nsfwToggle ? true : !isNsfw">
+    <div class="sticker-set-bar" (click)="toggleCollapsed()">
+        {{stickerSetName}}
+        <mat-icon [@rotateIcon]="stickerSetCollapsed ? 'expanded' : 'collapsed'">expand_more</mat-icon>
+    </div>
+    <div class="content" [@expandContent]="stickerSetCollapsed ? 'collapsed' : 'expanded'">
+        <ng-content></ng-content>
+    </div>
+</div>
