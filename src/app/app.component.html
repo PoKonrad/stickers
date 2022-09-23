@@ -29,7 +29,7 @@
 </app-sticker-set>
     <app-sticker-set *ngFor="let sticker of json; trackBy: trackBySet" stickerSetName="{{sticker.name}}" [@hide]="nsfwToggle && sticker.nsfw ? 'hidden' : 'visible'">
         <div *ngFor="let image of sticker.data">
-            <app-sticker url="https://stickers.farfelu.eu/{{sticker.name}}/{{image}}.png" 
+            <app-sticker url="/{{sticker.name}}/{{image}}.png" 
             (Favorite)="favorite($event)"
             (UnFavorite)="unFavorite($event)"
             (UnHide)="unHide($event)"
