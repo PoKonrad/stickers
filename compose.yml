@@ -1,5 +1,6 @@
 services:
   web-build:
+    build: .
     container_name: stickers-web-build
     volumes:
     - type: bind
