@@ -94,6 +94,7 @@ export class StickerComponent implements OnInit {
   async copyToClipboard(text: string) {
     if (this.size === '0') {
       navigator.clipboard.writeText(text);
+      return
     }
     navigator.clipboard.writeText(`${text.slice(0, -4)}_${this.size}.png`);
   }
