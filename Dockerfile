@@ -1,14 +1,12 @@
-FROM node:18.6.0-alpine
+FROM node:18-alpine
 
-WORKDIR /usr/src/app
-
-COPY package*.json ./
+ARG USER
 
 RUN npm install -g @angular/cli
 
-RUN npm install
+WORKDIR /app-internal
+RUN chown ${USER} /app-internal/
 
-COPY . .
+USER ${USER}
 
-ENTRYPOINT [ "/bin/sh", "-c", "ng build" ]
-
+ENTRYPOINT [ "/app/docker-entrypoint.sh" ]
