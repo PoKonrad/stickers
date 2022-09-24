@@ -27,13 +27,14 @@
     </app-sticker>
 </div>
 </app-sticker-set>
-    <app-sticker-set *ngFor="let sticker of json; trackBy: trackBySet" stickerSetName="{{sticker.name}}" [@hide]="nsfwToggle && sticker.nsfw ? 'hidden' : 'visible'">
+    <app-sticker-set *ngFor="let sticker of json; trackBy: trackBySet" stickerSetName="{{sticker.name}}" [@hide]="!nsfwToggle && sticker.nsfw ? 'hidden' : 'visible'">
         <div *ngFor="let image of sticker.data">
             <app-sticker url="/{{sticker.name}}/{{image}}.png" 
             (Favorite)="favorite($event)"
             (UnFavorite)="unFavorite($event)"
             (UnHide)="unHide($event)"
             (Hide)="hide($event)"
+            (Copied)="openCopiedSnackbar()"
             [size]="size"
             [isFavorite]="checkIfFavorite(sticker.name, image)"
             [isHidden]="checkIfHidden(sticker.name, image)"

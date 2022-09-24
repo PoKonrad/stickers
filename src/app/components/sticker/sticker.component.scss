@@ -8,14 +8,6 @@
         transition: background-color 0.2s ease;
     }
 }
-
-.outlined {
-    font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 48
-  }
   
   .imageContainer {
       position: relative;
@@ -26,6 +18,7 @@
       & img {
         width: 8rem;
         height: 8rem;
+        cursor: pointer;
       }
 
       &:hover {
@@ -41,6 +34,12 @@
       opacity: 0;
       transition: opacity 0.1s;
       right: 0.1rem;
+      cursor: pointer;
+
+      & *:hover {
+        filter: brightness(1.8);
+        transition: filter 0.2s;
+      }
 
       & .button-one {
         margin-inline: 0.2rem;

@@ -56,6 +56,7 @@ export class StickerComponent implements OnInit {
   @Output() UnFavorite = new EventEmitter<string>();
   @Output() Hide = new EventEmitter<string>();
   @Output() UnHide = new EventEmitter<string>();
+  @Output() Copied = new EventEmitter<void>();
 
   isShown = true;
 
@@ -92,6 +93,7 @@ export class StickerComponent implements OnInit {
   }
 
   async copyToClipboard(text: string) {
+    this.Copied.emit()
     if (this.size === '0') {
       navigator.clipboard.writeText(`https://farfelu.eu/${text}`);
       return
