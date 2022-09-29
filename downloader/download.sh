@@ -1,3 +1,3 @@
 #!/bin/sh
-
-docker run --rm $(docker build -q .) "$@"
+docker build -t sticker-downloader .
+docker run -v $PWD/stickers:/app/stickers --rm sticker-downloader "$@"

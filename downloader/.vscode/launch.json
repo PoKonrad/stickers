@@ -7,11 +7,25 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch without arguments",
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/index.mjs"
+      "program": "${workspaceFolder}/index.mjs",
+      "console": "internalConsole",
+      "outputCapture": "std"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch with download argument",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/index.mjs",
+      "args": ["./downloads.txt"],
+      "console": "internalConsole",
+      "outputCapture": "std"
     }
   ]
 }

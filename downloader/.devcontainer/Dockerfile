@@ -11,4 +11,4 @@ RUN mkdir -p /home/$USERNAME/.vscode-server/extensions \
         /home/$USERNAME/.vscode-server-insiders
 
 RUN apt-get update
-RUN apt-get install -y chromium libxss1
+RUN apt-get install -y chromium libxss1 ffmpeg imagemagick

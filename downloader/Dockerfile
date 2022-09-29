@@ -4,7 +4,7 @@ ARG USERNAME=node
 WORKDIR /app
 
 RUN apt-get update
-RUN apt-get install -y chromium libxss1
+RUN apt-get install -y chromium libxss1 ffmpeg imagemagick
 
 COPY package*.json ./
 RUN npm install --no-fund
