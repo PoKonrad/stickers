@@ -1,0 +1,16 @@
+{
+  "name": "telegram-sticker-converter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lottie-web": "^5.9.6",
+    "puppeteer": "^18.0.5"
+  }
+}
