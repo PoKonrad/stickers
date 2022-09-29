@@ -1,0 +1,54 @@
+image: node:18-bullseye
+variables:
+  FF_USE_FASTZIP: "true"
+
+cache:
+  untracked: true
+  policy: push
+  key: ${CI_COMMIT_SHORT_SHA}
+  paths:
+    - web/node_modules/
+
+.pull_cached_node_modules:
+  cache:
+    untracked: true
+    key: ${CI_COMMIT_SHORT_SHA}
+    policy: pull
+
+stages:
+  - setup
+  - build
+  - test
+
+web-setup:
+  stage: setup
+  script:
+    - cd web/
+    - npm ci
+
+web-build:
+  stage: build
+  extends: .pull_cached_node_modules
+  needs:
+    - web-setup
+  script:
+    - >-
+      export VERSION="{ \"tag\": \"`git describe --tags 2>/dev/null`\", \"branch\": \"$CI_COMMIT_REF_NAME\", \"rev\": \"`git rev-parse --short HEAD 2>/dev/null`\" }"
+    - cd web/
+    - npm install -g @angular/cli
+    - npm install
+    - ng build
+
+test:
+  stage: test
+  extends: .pull_cached_node_modules
+  needs:
+    - web-build
+  before_script:
+    - apt-get update
+    - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt install -y ./google-chrome*.deb;
+    - export CHROME_BIN=/usr/bin/google-chrome
+  script:
+    - cd web/
+    - npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
