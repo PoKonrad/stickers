@@ -12,6 +12,10 @@ const readFile = util.promisify(fs.readFile);
 const SIZES = [256, 160, 128, 64, 32];
 
 async function main(args) {
+  if (!args.length) {
+    console.error('missing sticker set parameter');
+    process.exit(1);
+  }
 
   await convert('testfile.tgs');
 
@@ -33,4 +37,4 @@ async function unpack(file) {
   return JSON.parse(json);
 }
 
-main(process.argv);
+main((process.argv ?? []).slice(2));

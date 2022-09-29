@@ -1,0 +1,14 @@
+FROM node:18
+ARG USERNAME=node
+
+WORKDIR /app
+
+RUN apt-get update
+RUN apt-get install -y chromium libxss1
+
+COPY package*.json ./
+RUN npm install --no-fund
+
+COPY . .
+
+ENTRYPOINT ["node", "index.mjs"]
