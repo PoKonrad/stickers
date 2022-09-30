@@ -175,8 +175,9 @@ export class AppComponent {
 
   ngOnInit() {
     console.log('%c uwu', 'font-size: 4rem')
-    this.nsfwToggle = JSON.parse(localStorage.getItem('nsfwToggle') || '')
+    this.nsfwToggle = JSON.parse(localStorage.getItem('nsfwToggle') || 'false')
     this.size = localStorage.getItem('imageSize') || ''
+    localStorage.setItem('imageSize', JSON.parse('0'))
     this.getJson();
   }
 
