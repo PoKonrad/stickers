@@ -56,7 +56,7 @@ async function renderLottie(lottieData, size) {
 
   const html = createHtml(lottieData, size);
   await page.setContent(html);
-  await page.waitForSelector('.ready');
+  await page.waitForSelector('.ready', { timeout: 5000 });
 
   const duration = await page.evaluate(() => duration);
   const numFrames = await page.evaluate(() => numFrames);
@@ -133,7 +133,7 @@ async function runFfmpeg(frames, args) {
     const { stdin, stdout, stderr } = ffmpeg;
 
     //stdout.pipe(process.stdout);
-    //stderr.pipe(process.stderr);
+    stderr.pipe(process.stderr);
 
     stdin.on('error', (err) => {
       if (err.code !== 'EPIPE') {

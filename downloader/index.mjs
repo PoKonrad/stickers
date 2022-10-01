@@ -75,12 +75,16 @@ async function handleTgs(file, outputDir) {
     const newFilePath = `${outputDir}/${newFilename}`;
 
     if (existsSync(newFilePath)) {
-      process.stdout.write(`Skipping ${file.dir}/${file.base} (${(size ? `${size}x${size}` : 'original')}) - already exists\n`);
+      //process.stdout.write(`Skipping ${file.dir}/${file.base} (${(size ? `${size}x${size}` : 'original')}) - already exists\n`);
       continue;
     }
 
-    const gif = await convertToGif(`${file.dir}/${file.base}`, size);
-    await writeFile(newFilePath, gif);
+    try {
+      const gif = await convertToGif(`${file.dir}/${file.base}`, size);
+      await writeFile(newFilePath, gif);
+    } catch (ex) {
+      process.stderr.write(`${ex}\n`);
+    }
   }
 }
 
@@ -90,12 +94,16 @@ async function handleGeneric(file, outputDir) {
     const newFilePath = `${outputDir}/${newFilename}`;
 
     if (existsSync(newFilePath)) {
-      process.stdout.write(`Skipping ${file.dir}/${file.base} (${(size ? `${size}x${size}` : 'original')}) - already exists\n`);
+      //process.stdout.write(`Skipping ${file.dir}/${file.base} (${(size ? `${size}x${size}` : 'original')}) - already exists\n`);
       continue;
     }
 
-    const webp = await convertToWebp(`${file.dir}/${file.base}`, size);
-    await writeFile(newFilePath, webp);
+    try {
+      const webp = await convertToWebp(`${file.dir}/${file.base}`, size);
+      await writeFile(newFilePath, webp);
+  } catch (ex) {
+    process.stderr.write(`${ex}\n`);
+  }
   }
 }
 
