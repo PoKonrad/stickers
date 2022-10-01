@@ -47,10 +47,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   ],
 })
 export class StickerComponent implements OnInit {
-  @Input() url: string = '';
+  @Input() sticker!: Sticker;
   @Input() isFavorite: boolean = false;
   @Input() isHidden: boolean = false;
-  @Input() size: string = '0';
+  @Input() size: number = 0;
 
   @Output() Favorite = new EventEmitter<string>();
   @Output() UnFavorite = new EventEmitter<string>();
@@ -70,34 +70,31 @@ export class StickerComponent implements OnInit {
 
   ngOnDestroy(): void {}
 
-  favoriteClick(url: string) {
+  favoriteClick(sticker: Sticker) {
     if (!this.isFavorite) {
-      this.UnFavorite.emit(url);
+      this.UnFavorite.emit(sticker.id);
     } else {
-      this.Favorite.emit(url);
+      this.Favorite.emit(sticker.id);
     }
   }
 
-  hideClick(url: string) {
+  hideClick(sticker: Sticker) {
     if (!this.isHidden) {
       this.hideImage();
       setTimeout(() => {
-        this.UnHide.emit(url);
+        this.UnHide.emit(sticker.id);
       }, 500);
     } else {
       this.hideImage();
       setTimeout(() => {
-        this.Hide.emit(url);
+        this.Hide.emit(sticker.id);
       }, 500);
     }
   }
 
-  async copyToClipboard(text: string) {
+  async copyToClipboard() {
+    const url = new URL(`stickers/${this.sticker.set}/${this.sticker.name}${(this.size ? `.s${this.size}` : '')}.${this.sticker.type}`, window.location.href).href;
+    navigator.clipboard.writeText(url);
     this.Copied.emit()
-    if (this.size === '0') {
-      navigator.clipboard.writeText(`https://farfelu.eu/${text}`);
-      return
-    }
-    navigator.clipboard.writeText(`${text.slice(0, -4)}_${this.size}.png`);
   }
 }

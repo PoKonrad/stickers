@@ -53,106 +53,125 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   ],
 })
 export class AppComponent {
-  json: { name: string; data: string[]; nsfw: boolean }[] | undefined;
+  json:  StickerJson | undefined;
 
   hidden: any = '';
   hiddenShown: boolean = false;
   tempHidden: Array<string> = [];
   unsavedBar: boolean = false
   nsfwToggle: boolean = false
-  size: string = '0'
+  size: number = 0;
 
-  resolution = [
-    {value: '0', text: 'Original'},
-    {value: '256', text: '256x256px'},
-    {value: '160', text: '160x160px'},
-    {value: '64', text: '64x64px'},
-    {value: '32', text: '32x32px'}
-  ]
+  resolution: any[] = [];
 
   async getJson() {
-    this.json = await fetch('stickers.json').then(resp => resp.json())
+    const json = await fetch('stickers/stickers.json').then(resp => resp.json());
+    this.json = json;
+    this.resolution = json.sizes.map((x: any) => {
+      return {
+        value: x,
+        text: x ? `${x}x${x}px` : 'Original'
+      }
+    });
   }
 
   handleSelectChange(e: MatSelectChange) {
     this.size = e.value
-    localStorage.setItem('imageSize', JSON.parse(this.size))
+    localStorage.setItem('imageSize', JSON.stringify(this.size))
   }
 
   constructor(
     private _snackbar: MatSnackBar
   ) { }
 
-  get Hidden(): Array<any> {
-    const a = JSON.parse(localStorage.getItem('hiddenStickers') || '[]');
-    return a;
+  get StickerSets() : StickerSet[] {
+    if (!this.json) {
+      return [];
+    }
+
+    let sets: StickerSet[] = [...this.json.sets];
+
+    // find all the favorites by id from all sets and prepend them as its own set
+    if (this.Favorites.length) {
+      const favoriteStickers: any[] = [];
+      for (const set of sets) {
+        const stickers = set.stickers.filter(x => this.Favorites.includes(x.id));
+        if (stickers.length) {
+          favoriteStickers.push.apply(favoriteStickers, stickers);
+        }
+      }
+
+      if (favoriteStickers.length) {
+        sets.unshift({
+          name: 'Favorites',
+          nsfw: false,
+          stickers: favoriteStickers
+        });
+      }
+    }
+
+    return sets;
   }
 
-  get Favorite() {
-    const a = JSON.parse(localStorage.getItem('favoriteStickers') || '[]');
-    return a;
+  _favoritesCache: any;
+  get Favorites() {
+    if (!this._favoritesCache) {
+      this._favoritesCache = JSON.parse(localStorage.getItem('favoriteStickers') || '[]');
+    }
+
+    return this._favoritesCache;
+  }
+  set Favorites(val) {
+    localStorage.setItem('favoriteStickers', JSON.stringify(val));
+    this._favoritesCache = val;
   }
 
-  hide(url: string) {
-    if(this.tempHidden.includes(url)) {
-      this.tempHidden = this.tempHidden.filter((el: string) => el !== url)
+  _hiddenCache: any;
+  get Hidden() {
+    if (!this._hiddenCache) {
+      this._hiddenCache = JSON.parse(localStorage.getItem('hiddenStickers') || '[]');
+    }
+    return this._hiddenCache;
+  }
+  set Hidden(val) {
+    localStorage.setItem('hiddenStickers', JSON.stringify(val));
+    this._hiddenCache = val;
+  }
+
+  hide(id: string) {
+    if(this.tempHidden.includes(id)) {
+      this.tempHidden = this.tempHidden.filter((el: string) => el !== id)
       this.toggleBar()
       return
     }
-    this.tempHidden.push(url);
+    this.tempHidden.push(id);
     this.toggleBar()
   }
 
   saveHidden() {
-    const currentHidden = this.Hidden;
-    localStorage.setItem(
-      'hiddenStickers',
-      JSON.stringify([...currentHidden, ...this.tempHidden])
-    );
+    this.Hidden = [...this.Hidden, ...this.tempHidden];
     this.tempHidden = []
     this.toggleBar()
   }
 
-  favorite(url: string) {
-    const currentFav = this.Favorite;
-    localStorage.setItem(
-      'favoriteStickers',
-      JSON.stringify([...currentFav, url])
-    );
+  favorite(id: string) {
+    this.Favorites = [...this.Favorites, id];
   }
 
-  unFavorite(url: string) {
-    const currentFav = this.Favorite;
-    localStorage.setItem(
-      'favoriteStickers',
-      JSON.stringify(currentFav.filter((el: string) => el !== url))
-    );
+  unFavorite(id: string) {
+    this.Favorites = this.Favorites.filter((el: string) => el !== id);
   }
 
-  unHide(url: string) {
-    const currentHidden = this.Hidden;
-    localStorage.setItem(
-      'hiddenStickers',
-      JSON.stringify(currentHidden.filter((el: string) => el !== url))
-    );
+  unHide(id: string) {
+    this.Hidden = this.Hidden.filter((el: string) => el !== id);
   }
 
-  checkIfHidden(name?: string, image?: string, url?: string) {
-    if (name) {
-      return !this.Hidden.includes(
-        `/${name}/${image}.png`
-      );
-    }
-    return !this.Hidden.includes(url || '');
+  checkIfHidden(id: string) {
+    return !this.Hidden.includes(id);
   }
 
-  checkIfFavorite(name?: string, image?: string, url?: string) {
-    if (name) {
-      return !this.Favorite.includes(
-        `/${name}/${image}.png`
-      );
-    }
-    return !this.Favorite.includes(url || '');
+  checkIfFavorite(id: string) {
+    return !this.Favorites.includes(id);
   }
 
   toggleShowHidden(e: MatCheckboxChange) {
@@ -176,8 +195,7 @@ export class AppComponent {
   ngOnInit() {
     console.log('%c uwu', 'font-size: 4rem')
     this.nsfwToggle = JSON.parse(localStorage.getItem('nsfwToggle') || 'false')
-    this.size = localStorage.getItem('imageSize') || ''
-    localStorage.setItem('imageSize', JSON.parse('0'))
+    this.size = JSON.parse(localStorage.getItem('imageSize') || '0');
     this.getJson();
   }
 
@@ -189,7 +207,7 @@ export class AppComponent {
   openCopiedSnackbar() {
     this._snackbar.open('Sticker succesfully copied!', 'Dismiss', {
       duration: 2000,
-       
+
     })
   }
 

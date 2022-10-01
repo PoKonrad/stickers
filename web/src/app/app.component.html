@@ -16,30 +16,20 @@
     </div>
 </div>
 
-<app-sticker-set stickerSetName="Favorites">
-    <div *ngFor="let image of Favorite">
-        <app-sticker [url]="image" 
-        (UnFavorite)="unFavorite($event)"
-        [isFavorite]="checkIfFavorite('', '', image)"
-        [isHidden]="checkIfHidden('', '', image)"
-        [size]="size"
-        (Hide)="hide($event)">
-    </app-sticker>
-</div>
-</app-sticker-set>
-    <app-sticker-set *ngFor="let sticker of json; trackBy: trackBySet" stickerSetName="{{sticker.name}}" [@hide]="!nsfwToggle && sticker.nsfw ? 'hidden' : 'visible'">
-        <div *ngFor="let image of sticker.data">
-            <app-sticker url="/{{sticker.name}}/{{image}}.png" 
+<app-sticker-set *ngFor="let set of StickerSets; trackBy: trackBySet" stickerSetName="{{set.name}}" [@hide]="!nsfwToggle && set.nsfw ? 'hidden' : 'visible'">
+    <div *ngFor="let sticker of set.stickers">
+        <app-sticker
+            [sticker]="sticker"
             (Favorite)="favorite($event)"
             (UnFavorite)="unFavorite($event)"
             (UnHide)="unHide($event)"
             (Hide)="hide($event)"
             (Copied)="openCopiedSnackbar()"
             [size]="size"
-            [isFavorite]="checkIfFavorite(sticker.name, image)"
-            [isHidden]="checkIfHidden(sticker.name, image)"
-            *ngIf="hiddenShown ? true : checkIfHidden(sticker.name, image)"
-            >
+            [isFavorite]="checkIfFavorite(sticker.id)"
+            [isHidden]="checkIfHidden(sticker.id)"
+            *ngIf="hiddenShown ? true : checkIfHidden(sticker.id)"
+        >
         </app-sticker>
     </div>
 </app-sticker-set>
