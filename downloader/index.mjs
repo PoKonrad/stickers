@@ -145,10 +145,6 @@ async function createJson() {
     };
     obj.sets.push(set);
 
-    if (set.nsfw) {
-      set.name = set.name.replace('_nsfw', '');
-    }
-
     for (const sticker of stickers) {
       const stickerInfo = pathParse(`${setPath}/${sticker}`);
       const stickerId = stickerInfo.name.substring(stickerInfo.name.indexOf('-') + 1);
