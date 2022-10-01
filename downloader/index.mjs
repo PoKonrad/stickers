@@ -70,7 +70,7 @@ async function handleNewSet(set) {
 
 async function handleTgs(file, outputDir) {
   for (const size of SIZES) {
-    const newFilename = `sticker${file.name.replace('file_', '')}${(size ? `.s${size}` : '')}.gif`;
+    const newFilename = `${file.name.replace('file_', '')}${(size ? `.s${size}` : '')}.gif`;
     const newFilePath = `${outputDir}/${newFilename}`;
 
     if (existsSync(newFilePath)) {
@@ -85,7 +85,7 @@ async function handleTgs(file, outputDir) {
 
 async function handleGeneric(file, outputDir) {
   for (const size of SIZES) {
-    const newFilename = `sticker${file.name.replace('file_', '')}${(size ? `.s${size}` : '')}.webp`;
+    const newFilename = `${file.name.replace('file_', '')}${(size ? `.s${size}` : '')}.webp`;
     const newFilePath = `${outputDir}/${newFilename}`;
 
     if (existsSync(newFilePath)) {
