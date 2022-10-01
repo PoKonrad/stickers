@@ -36,6 +36,5 @@ export default async function(file, size) {
   const webpFile = await readFile(outputFile);
   await unlink(outputFile);
 
-  process.stdout.write(`    done\n`);
   return webpFile;
 }

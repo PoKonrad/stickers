@@ -25,6 +25,7 @@ async function main(args) {
   await createJson();
 
   process.stdout.write(`\nDone`);
+  process.exit(1);
 }
 
 async function convertNewDownloads() {

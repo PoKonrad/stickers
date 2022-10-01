@@ -123,7 +123,6 @@ async function convertToGif(frames, fps) {
   await unlink(tempPalette);
   await unlink(outputFile);
 
-  process.stdout.write(`    done\n`);
   return file;
 }
 
