@@ -133,7 +133,7 @@ async function runFfmpeg(frames, args) {
     const { stdin, stdout, stderr } = ffmpeg;
 
     //stdout.pipe(process.stdout);
-    stderr.pipe(process.stderr);
+    //stderr.pipe(process.stderr);
 
     stdin.on('error', (err) => {
       if (err.code !== 'EPIPE') {
