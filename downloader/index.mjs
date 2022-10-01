@@ -111,7 +111,13 @@ async function createJson() {
   process.stdout.write('Generating stickers.json...\n');
 
   // loop over all sets and then over all stickers
-  const sets = (await getDirectories('./stickers')).filter(x => !x.startsWith('_'));
+  const sets = (await getDirectories('./stickers'))
+               .filter(x => !x.startsWith('_'))
+               .sort((a, b) => {
+                  const x = a.toUpperCase();
+                  const y = b.toUpperCase();
+                  return x == y ? 0 : x > y ? 1 : -1;
+               });
 
   const obj = {
     sizes: SIZES,
