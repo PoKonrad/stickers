@@ -34,7 +34,7 @@ let lottieScript = null;
 // uses headless chrome to screenshot each frame
 // of the lottie json animation and feeds it to ffmpeg
 async function renderLottie(lottieData, size) {
-  size ??= lottieData.w;
+  size ||= lottieData.w;
 
   if (!lottieScript) {
     lottieScript = await readFile(lottieScriptPath, { encoding: 'utf8', flag: 'r' });
