@@ -92,6 +92,10 @@ export class StickerComponent implements OnInit {
     }
   }
 
+  preventDefaults(e: any) {
+    e.preventDefaults()
+  }
+
   async copyToClipboard() {
     const url = new URL(`stickers/${this.sticker.set}/${this.sticker.name}${(this.size ? `.s${this.size}` : '')}.${this.sticker.type}`, window.location.href).href;
     navigator.clipboard.writeText(url);
