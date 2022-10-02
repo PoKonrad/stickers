@@ -1,4 +1,4 @@
-<div>
+<div [@hide]="!nsfwToggle && isNsfw ? 'hidden' : 'visible'">
     <div class="sticker-set-bar" (click)="toggleCollapsed()">
         {{stickerSetName | setSetName}}
         <mat-icon [@rotateIcon]="stickerSetCollapsed ? 'expanded' : 'collapsed'">expand_more</mat-icon>

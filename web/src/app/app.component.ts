@@ -8,13 +8,13 @@ import {
 } from '@angular/animations';
 import type { MatCheckboxChange } from '@angular/material/checkbox';
 import type { MatSelectChange } from '@angular/material/select';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { StickersService } from './services/stickers.service';
+import { StickerSetsService } from './services/sticker-sets.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [MatSnackBar],
   animations: [
     trigger('topBar', [
       state(
@@ -60,7 +60,7 @@ export class AppComponent {
 
   hidden: any = '';
   hiddenShown: boolean = false;
-  tempHidden: Array<string> = [];
+  tempHidden: Array<string> = this._stickerService.tempHidden;
   unsavedBar: boolean = false;
   nsfwToggle: boolean = false;
   size: number = 0;
@@ -85,7 +85,10 @@ export class AppComponent {
     localStorage.setItem('imageSize', JSON.stringify(this.size));
   }
 
-  constructor(private _snackbar: MatSnackBar) {}
+  constructor(
+    public _stickerService: StickersService,
+    private _stickerSetsService: StickerSetsService
+    ) {}
 
   get StickerSets(): StickerSet[] {
     if (!this.json) {
@@ -95,10 +98,10 @@ export class AppComponent {
 
     // find all the favorites by id from all sets and prepend them as its own set
     const favoriteStickers: any[] = [];
-    if (this.Favorites.length) {
+    if (this._stickerService.Favorites.length) {
       for (const set of sets) {
         const stickers = set.stickers.filter((x) =>
-          this.Favorites.includes(x.id)
+          this._stickerService.Favorites.includes(x.id)
         );
         if (stickers.length) {
           favoriteStickers.push.apply(favoriteStickers, stickers);
@@ -115,104 +118,21 @@ export class AppComponent {
     return sets;
   }
 
-  _favoritesCache: any;
-  get Favorites() {
-    if (!this._favoritesCache) {
-      this._favoritesCache = JSON.parse(
-        localStorage.getItem('favoriteStickers') || '[]'
-      );
-    }
-
-    return this._favoritesCache;
-  }
-  set Favorites(val) {
-    localStorage.setItem('favoriteStickers', JSON.stringify(val));
-    this._favoritesCache = val;
+  toggleShowHidden(checkbox: MatCheckboxChange) {
+    this._stickerService.toggleShowHidden(checkbox)
   }
 
-  _hiddenCache: any;
-  get Hidden() {
-    if (!this._hiddenCache) {
-      this._hiddenCache = JSON.parse(
-        localStorage.getItem('hiddenStickers') || '[]'
-      );
-    }
-    return this._hiddenCache;
-  }
-  set Hidden(val) {
-    localStorage.setItem('hiddenStickers', JSON.stringify(val));
-    this._hiddenCache = val;
-  }
-
-  hide(id: string) {
-    if (this.tempHidden.includes(id)) {
-      this.tempHidden = this.tempHidden.filter((el: string) => el !== id);
-      this.toggleBar();
-      return;
-    }
-    this.tempHidden.push(id);
-    this.toggleBar();
-  }
-
-  saveHidden() {
-    this.Hidden = [...this.Hidden, ...this.tempHidden];
-    this.tempHidden = [];
-    this.toggleBar();
-  }
-
-  favorite(id: string) {
-    this.Favorites = [...this.Favorites, id];
-  }
-
-  unFavorite(id: string) {
-    this.Favorites = this.Favorites.filter((el: string) => el !== id);
-  }
-
-  unHide(id: string) {
-    this.Hidden = this.Hidden.filter((el: string) => el !== id);
-  }
-
-  checkIfHidden(id: string) {
-    return !this.Hidden.includes(id);
-  }
-
-  checkIfFavorite(id: string) {
-    return !this.Favorites.includes(id);
-  }
-
-  toggleShowHidden(e: MatCheckboxChange) {
-    this.hiddenShown = e.checked;
-  }
-
-  toggleShowNsfw(e: MatCheckboxChange) {
-    localStorage.setItem('nsfwToggle', JSON.stringify(e.checked));
-    this.nsfwToggle = e.checked;
-  }
-
-  toggleBar() {
-    if (this.tempHidden.length === 0) {
-      console.warn(this.tempHidden);
-      this.unsavedBar = false;
-      return;
-    }
-    this.unsavedBar = true;
+  toggleShowNsfw(checkbox: MatCheckboxChange) {
+    this._stickerSetsService.toggleNsfw(checkbox)
   }
 
   ngOnInit() {
     console.log('%c uwu', 'font-size: 4rem');
-    this.nsfwToggle = JSON.parse(localStorage.getItem('nsfwToggle') || 'false');
-    this.size = JSON.parse(localStorage.getItem('imageSize') || '0');
     this.getJson();
   }
 
   trackBySet(el: any): string {
     return el.name;
-  }
-
-  openCopiedSnackbar() {
-    this._snackbar.open('Sticker succesfully copied!', 'Dismiss', {
-      duration: 2000,
-    });
   }
 
   title = 'stickers';
