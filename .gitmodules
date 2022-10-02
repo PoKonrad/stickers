@@ -1,0 +1,3 @@
+[submodule "downloader/stickers"]
+	path = downloader/stickers
+	url = ssh://git@git.farfelu.eu:8022/farfelu/telegram-stickers.git

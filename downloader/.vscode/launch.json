@@ -23,7 +23,7 @@
         "<node_internals>/**"
       ],
       "program": "${workspaceFolder}/index.mjs",
-      "args": ["./downloads.txt"],
+      "args": ["./stickers/downloads.txt"],
       "console": "internalConsole",
       "outputCapture": "std"
     }
