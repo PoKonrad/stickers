@@ -96,6 +96,8 @@ export class AppComponent {
     }
     let sets: StickerSet[] = [...this.json.sets];
 
+    this._stickerService.previewSize = this.json.previewSize
+
     // find all the favorites by id from all sets and prepend them as its own set
     const favoriteStickers: any[] = [];
     if (this._stickerService.Favorites.length) {

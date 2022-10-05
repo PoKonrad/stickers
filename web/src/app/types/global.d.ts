@@ -4,6 +4,7 @@ declare global {
   type StickerJson = {
     sizes: number[];
     sets: StickerSet[];
+    previewSize: number;
   }
   type StickerSet = {
     name: string;
