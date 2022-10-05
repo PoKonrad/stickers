@@ -11,10 +11,8 @@ declare global {
     stickers: Sticker[];
   }
   type Sticker = {
-    id: string;
     type: string;
-    name: string;
-    set: string;
-    preview: string;
+    num: string;
+    id: string
   }
 }

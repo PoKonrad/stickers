@@ -20,6 +20,7 @@ export class StickersService {
   resolution: any[] = [];
   _favoritesCache: any;
   hiddenChanged = new BehaviorSubject(false)
+  previewSize: string = '160'
 
   get Hidden() {
     if (!this._hiddenCache) {

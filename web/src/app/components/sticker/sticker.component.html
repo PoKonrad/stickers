@@ -1,6 +1,6 @@
 <div class="imageContainer" *ngIf="this.hiddenShown ? true : isHidden">
-    <a href="stickers/{{sticker.set}}/{{sticker.preview}}" (click)="preventDefaults($event)">
-        <img class="sticker" src="stickers/{{sticker.set}}/{{sticker.preview}}" loading="lazy" (click)="copyToClipboard()" [@openClose]="isShown ? 'open' : 'closed'">
+    <img class="sticker" src="stickers/{{this.stickerSetName}}/{{this.sticker.num}}-{{this.sticker.id}}.s{{this.stickersService.previewSize}}.{{this.sticker.type}}" loading="lazy" (click)="copyToClipboard()" [@openClose]="isShown ? 'open' : 'closed'">
+    <a [href]="stickerActualUrl" (click)="preventDefaults($event)">
     </a>
     <div class="text" [@hideText]="isShown ? 'hidden' : 'shown'">
         <p>HIDDEN</p>
