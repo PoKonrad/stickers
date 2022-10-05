@@ -10,5 +10,10 @@ RUN mkdir -p /home/$USERNAME/.vscode-server/extensions \
         /home/$USERNAME/.vscode-server \
         /home/$USERNAME/.vscode-server-insiders
 
-RUN apt-get update
-RUN apt-get install -y chromium libxss1 ffmpeg imagemagick git git-lfs
+RUN apt-get update && apt-get install -y \
+    chromium \
+    libxss1 \
+    ffmpeg \
+    imagemagick \
+    git \
+    git-lfs
