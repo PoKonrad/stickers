@@ -41,7 +41,7 @@ async function handleNewSet(set) {
   try {
     const newSetPath = `./stickers/_new/${set}`;
     if (!existsSync(newSetPath)) {
-      await mkdir(newSetPath);
+      await mkdir(newSetPath, { recursive: true });
     }
     const setPath = `./stickers/_download/${set}`;
     const files = await readdir(setPath);
