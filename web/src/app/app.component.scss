@@ -4,15 +4,15 @@ body {
 
 .save-bar {
     width: 100vw;
-    background-color: #e91e63;
     color: white;
     position: fixed;
     top: 0;
-    z-index: 2;
+    z-index: 3;
     height: 2rem;
     padding: 1rem;
     display: flex;
     align-items: center;
+    width: fit-content;
 
     & button {
         margin-inline: 1rem;
@@ -26,19 +26,23 @@ body {
         color: white;
         font-size: 14px;
         font-weight: 500;
-        z-index: 3;
+        z-index: 4;
         cursor: pointer;
     }
 }
 
 .settings {
     display: flex;
+    width: 100vw;
     align-items: center;
     justify-content: center;
     height: 2rem;
     gap: 2rem;
     padding: 1rem;
     background-color: #e91e63;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 
     & mat-checkbox {
         z-index: 10;

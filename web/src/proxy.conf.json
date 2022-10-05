@@ -1,0 +1,7 @@
+{
+    "/stickers": {
+      "target": "https://stickers2.farfelu.eu/",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }

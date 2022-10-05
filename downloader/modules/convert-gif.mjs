@@ -56,7 +56,7 @@ async function renderLottie(lottieData, size) {
 
   const html = createHtml(lottieData, size);
   await page.setContent(html);
-  await page.waitForSelector('.ready');
+  await page.waitForSelector('.ready', { timeout: 5000 });
 
   const duration = await page.evaluate(() => duration);
   const numFrames = await page.evaluate(() => numFrames);

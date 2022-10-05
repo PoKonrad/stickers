@@ -1,10 +1,10 @@
-<div class="save-bar" [@topBar]="unsavedBar ? 'shown' : 'hidden'">
+<div class="save-bar" [@topBar]="_stickerService.unsavedBar ? 'shown' : 'hidden'">
     You have unsaved hidden stickers
-    <button (click)="saveHidden()">SAVE</button>
+    <button (click)="_stickerService.saveHidden()">SAVE</button>
 </div>
 
 <div class="settings">
-    <mat-checkbox [checked]="nsfwToggle" (change)="toggleShowNsfw($event)">Show NSFW</mat-checkbox>
+    <mat-checkbox [checked]="nsfwToggle" (change)="toggleShowNsfw($event)">NSFW</mat-checkbox>
     <mat-checkbox (change)="toggleShowHidden($event)">Show Hidden</mat-checkbox>
     <div class="select">
         Size:
@@ -16,22 +16,14 @@
     </div>
 </div>
 
-<app-sticker-set *ngFor="let set of StickerSets; trackBy: trackBySet" stickerSetName="{{set.name}}" [@hide]="!nsfwToggle && set.nsfw ? 'hidden' : 'visible'">
+<app-sticker-set *ngFor="let set of StickerSets; trackBy: trackBySet" stickerSetName="{{set.name}}" [isNsfw]="set.nsfw">
     <div *ngFor="let sticker of set.stickers">
         <app-sticker
-            [sticker]="sticker"
-            (Favorite)="favorite($event)"
-            (UnFavorite)="unFavorite($event)"
-            (UnHide)="unHide($event)"
-            (Hide)="hide($event)"
-            (Copied)="openCopiedSnackbar()"
-            [size]="size"
-            [isFavorite]="checkIfFavorite(sticker.id)"
-            [isHidden]="checkIfHidden(sticker.id)"
-            *ngIf="hiddenShown ? true : checkIfHidden(sticker.id)"
+        [sticker]="sticker"
+        [size]="size"
         >
-        </app-sticker>
-    </div>
+    </app-sticker>
+</div>
 </app-sticker-set>
 
 <!-- (((((##################%%%,,,,,,,,,,,,,,,,,,,...,,,,,,,,...../*//,,.,,,,,,,,,,,,
