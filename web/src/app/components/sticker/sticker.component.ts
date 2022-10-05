@@ -54,6 +54,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class StickerComponent implements OnInit {
   @Input() sticker!: Sticker;
   @Input() size: number = 0;
+  @Input() stickerSetName: string = ''
 
   isFavorite: boolean = false;
   isHidden: boolean = false;
@@ -122,12 +123,15 @@ export class StickerComponent implements OnInit {
   preventDefaults(e: any) {
     e.preventDefaults();
   }
+  
+  
+  get stickerActualUrl() {
+    return `stickers/${this.stickerSetName}/${this.sticker.num}-${this.sticker.id}${(this.size ? `.s${this.size}` : '')}.${this.sticker.type}`
+  }
 
   async copyToClipboard() {
     const url = new URL(
-      `stickers/${this.sticker.set}/${this.sticker.name}${
-        this.size ? `.s${this.size}` : ''
-      }.${this.sticker.type}`,
+      this.stickerActualUrl,
       window.location.href
     ).href;
     navigator.clipboard.writeText(url);
