@@ -101,9 +101,9 @@ async function handleGeneric(file, outputDir) {
     try {
       const webp = await convertToWebp(`${file.dir}/${file.base}`, size);
       await writeFile(newFilePath, webp);
-  } catch (ex) {
-    process.stderr.write(`${ex}\n`);
-  }
+    } catch (ex) {
+      process.stderr.write(`${ex}\n`);
+    }
   }
 }
 
@@ -112,14 +112,9 @@ async function createJson() {
 
   // loop over all categories, sets and stickers
   const categories = (await getDirectories('./stickers'))
-               .filter(x => !x.startsWith('_') && !x.startsWith('.'))
-               .sort((a, b) => {
-                  const x = a.toUpperCase();
-                  const y = b.toUpperCase();
-                  return x == y ? 0 : x > y ? 1 : -1;
-               });
+               .filter(x => !x.startsWith('_') && !x.startsWith('.'));
 
-  const obj = {
+  const json = {
     sizes: SIZES,
     previewSize: THUMBNAIL_SIZE,
     sets: []
@@ -127,13 +122,8 @@ async function createJson() {
 
   let stickerCount = 0;
   for (const category of categories) {
-    const categoryPath = `./stickers/${category}`
-    const sets = (await getDirectories(categoryPath))
-               .sort((a, b) => {
-                  const x = a.toUpperCase();
-                  const y = b.toUpperCase();
-                  return x == y ? 0 : x > y ? 1 : -1;
-               });
+    const categoryPath = `./stickers/${category}`;
+    const sets = await getDirectories(categoryPath);
     for (const setName of sets) {
       const setPath = `${categoryPath}/${setName}/`;
 
@@ -153,13 +143,12 @@ async function createJson() {
         category: category,
         stickers: []
       };
-      obj.sets.push(set);
+      json.sets.push(set);
 
       for (const sticker of stickers) {
         const stickerInfo = pathParse(`${setPath}/${sticker}`);
-        const stickerNameParts = stickerInfo.name.split('-');
-        const stickerNum = stickerNameParts[0];
-        const stickerId = stickerNameParts[1];
+        const stickerNum = stickerInfo.name.substring(0, 3);
+        const stickerId = stickerInfo.name.substring(4);
         set.stickers.push({
           type: stickerInfo.ext.substring(1),
           num: stickerNum,
@@ -169,10 +158,19 @@ async function createJson() {
     }
   }
 
-  process.stdout.write(`Found ${categories.length} categories with ${obj.sets.length} sets and a total of ${stickerCount} stickers...\n`);
 
-  const json = JSON.stringify(obj, null, 0);
-  await writeFile('./stickers/stickers.json', json, { encoding: 'utf8' });
+
+  process.stdout.write(`Found ${categories.length} categories with ${json.sets.length} sets and a total of ${stickerCount} stickers...\n`);
+
+  // sort sets by set name case insensitive
+  json.sets = json.sets.sort((a, b) => {
+     const x = a.name.toUpperCase();
+     const y = b.name.toUpperCase();
+     return x == y ? 0 : x > y ? 1 : -1;
+  });
+
+  const jsonStr = JSON.stringify(json, null, 0);
+  await writeFile('./stickers/stickers.json', jsonStr, { encoding: 'utf8' });
 }
 
 async function download(args) {
