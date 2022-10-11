@@ -1,10 +1,10 @@
-import * as dotenv from 'dotenv';
+import 'dotenv/config'
 import { readdir, mkdir, writeFile, readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { parse as pathParse } from 'node:path';
-import downloadSet from './modules/downloader.mjs';
-import convertToGif from './modules/convert-gif.mjs';
-import convertToWebp from './modules/convert-webp.mjs';
+import downloadSet from './modules/downloader.js';
+import convertToGif from './modules/convert-gif.js';
+import convertToWebp from './modules/convert-webp.js';
 
 
 // 0 = original
